@@ -1,4 +1,5 @@
-const $inputFile = document.getElementById("files")
+const $inputFile = document.getElementById("files"),
+  $main = document.querySelector("main");
 
 const upload = (file) => {
   const xhr = new XMLHttpRequest(),
@@ -20,6 +21,40 @@ const upload = (file) => {
   xhr.send(formData)
 }
 
+const progressUpload = (file) => {
+  // Crear elementos
+  const $progress = document.createElement("progress"),
+    $span = document.createElement("span");
+
+  //  Set default values to elements
+  $progress.value = 0;
+  $progress.max = 100;
+
+  // Add elements to DOM
+  $main.append($progress);
+  $main.append($span);
+
+  // Instance File Reader
+  const reader = new FileReader()
+  reader.readAsDataURL(file)
+
+  // When uploading file
+  reader.addEventListener("progress", e => {
+    const progress = parseInt((e.loaded * 100) / e.total);
+    $progress.value = progress;
+    $span.innerHTML = `<b>${file.name}: ${progress}%</b>`;
+  })
+
+  // When uploaded
+  reader.addEventListener("loadend", e => {
+    upload(file)
+    setTimeout(() => {
+      $main.removeChild($progress);
+      $main.removeChild($span);
+      $inputFile.value = "";
+    }, 3000);
+  })
+}
 document.addEventListener("change", e => {
   if (e.target === $inputFile) {
     const files = Array.from(e.target.files)
