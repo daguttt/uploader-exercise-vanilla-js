@@ -3,13 +3,67 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./uploader.css" />
     <script src="./uploader.js" defer></script>
     <title>Uploader con AJAX</title>
+    <style>
+      html {
+        box-sizing: border-box;
+        font-size: 16px;
+        font-family: sans-serif;
+      }
+
+      :is(*, *::after, *::before) {
+        box-sizing: inherit;
+      }
+
+      main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      progress {
+        margin-top: 2rem;
+      }
+
+      .dropzone {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 20vh;
+        width: 50%;
+        margin: 1rem 0;
+        border: thin dashed #666666;
+        border-radius: 8px;
+      }
+      .dropzone.active {
+        border: thin dashed #000000;
+        background-color: #66666622;
+        animation: pulse 1s infinite;
+        animation-timing-function: ease-in-out;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.1);
+        }
+      }
+    </style>
   </head>
   <body>
     <main>
       <input type="file" name="files" id="files" multiple />
+      <article class="dropzone">
+        <p>Arrastra y los archivos a subir</p>
+      </article>
     </main>
   </body>
 </html>
