@@ -1,5 +1,7 @@
-const $inputFile = document.getElementById("files"),
-  $main = document.querySelector("main");
+const d = document,
+  $inputFile = d.getElementById("files"),
+  $main = d.querySelector("main"),
+  $dropZone = d.querySelector(".dropzone");
 
 const upload = (file) => {
   const xhr = new XMLHttpRequest(),
@@ -55,9 +57,28 @@ const progressUpload = (file) => {
     }, 3000);
   })
 }
+
 document.addEventListener("change", e => {
   if (e.target === $inputFile) {
     const files = Array.from(e.target.files)
-    files.forEach(el => upload(el))
+    files.forEach(el => progressUpload(el))
   }
+})
+
+$dropZone.addEventListener("dragover", e => {
+  e.stopPropagation();
+  console.log(e)
+  e.target.classList.add("active")
+})
+
+$dropZone.addEventListener("dragleave", e => {
+  e.stopPropagation();
+  e.target.classList.remove("active")
+})
+
+$dropZone.addEventListener("drop", e => {
+  e.stopPropagation();
+  const files = Array.from(e.dataTransfer.files)
+  files.forEach(el => progressUpload(el))
+  e.target.classList.remove("active")
 })
